@@ -1,0 +1,49 @@
+package universe
+
+type JumpBuilder struct {
+	jumpType     string
+	fromLocation Location
+	toSystemId   Id
+	toLocation   Location
+	costs        []TravelCost
+}
+
+func newJumpBuilder(jumpType string, destinationId Id) *JumpBuilder {
+	result := &JumpBuilder{
+		jumpType:     jumpType,
+		toSystemId:   destinationId,
+		fromLocation: AnyLocation(),
+		toLocation:   AnyLocation(),
+		costs:        make([]TravelCost, 0)}
+
+	return result
+}
+
+func (builder *JumpBuilder) Build() *Jump {
+	result := &Jump{
+		jumpType:     builder.jumpType,
+		fromLocation: builder.fromLocation,
+		toSystemId:   builder.toSystemId,
+		toLocation:   builder.toLocation,
+		costs:        append(make([]TravelCost, 0), builder.costs...)}
+
+	return result
+}
+
+func (builder *JumpBuilder) From(location Location) *JumpBuilder {
+	builder.fromLocation = location
+
+	return builder
+}
+
+func (builder *JumpBuilder) To(location Location) *JumpBuilder {
+	builder.toLocation = location
+
+	return builder
+}
+
+func (builder *JumpBuilder) AddCost(cost TravelCost) *JumpBuilder {
+	builder.costs = append(builder.costs, cost)
+
+	return builder
+}

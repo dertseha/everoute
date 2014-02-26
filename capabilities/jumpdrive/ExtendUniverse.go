@@ -1,0 +1,62 @@
+package jumpdrive
+
+import "github.com/dertseha/everoute/universe"
+
+const MetersPerAu float64 = 149597870700
+const MetersPerLy float64 = MetersPerAu * 63241
+
+func isNewEdenSystem(system *universe.SolarSystemExtension) bool {
+	return system.GalaxyId() == 9
+}
+
+func isHighSecSystem(system *universe.SolarSystemExtension) bool {
+	return false
+}
+
+func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
+	highSecSystems := make([]universe.SolarSystemExtension, 0)
+	nonHighSecSystems := make([]universe.SolarSystemExtension, 0)
+	ids := builder.SolarSystemIds()
+
+	for _, id := range ids {
+		extension := builder.ExtendSolarSystem(id)
+
+		if isNewEdenSystem(&extension) {
+			if isHighSecSystem(&extension) {
+				highSecSystems = append(highSecSystems, extension)
+			} else {
+				nonHighSecSystems = append(nonHighSecSystems, extension)
+			}
+		}
+	}
+
+	createJumpsFromHighSec := func(source *universe.SolarSystemExtension) {
+		for _, other := range nonHighSecSystems {
+			distance := source.Location().DistanceTo(other.Location()) / MetersPerLy
+			if distance <= limit {
+				source.AddJump("jumpDrive", other.Id())
+			}
+		}
+	}
+
+	createJumpsBetween := func(source *universe.SolarSystemExtension, startIndex int) {
+		indexLimit := len(nonHighSecSystems)
+
+		for i := startIndex; i < indexLimit; i++ {
+			other := nonHighSecSystems[i]
+			distance := source.Location().DistanceTo(other.Location()) / MetersPerLy
+
+			if distance <= limit {
+				source.AddJump("jumpDrive", other.Id())
+				other.AddJump("jumpDrive", source.Id())
+			}
+		}
+	}
+
+	for _, source := range highSecSystems {
+		createJumpsFromHighSec(&source)
+	}
+	for i, source := range nonHighSecSystems {
+		createJumpsBetween(&source, i+1)
+	}
+}
