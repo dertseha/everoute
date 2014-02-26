@@ -8,12 +8,16 @@ func (extension *SolarSystemExtension) Id() Id {
 	return extension.data.base.Id()
 }
 
-func (extension *SolarSystemExtension) GalaxyId() Id {
+func (extension *SolarSystemExtension) GalaxyId() GalaxyId {
 	return extension.data.base.GalaxyId()
 }
 
 func (extension *SolarSystemExtension) Location() Location {
 	return extension.data.base.Location()
+}
+
+func (extension *SolarSystemExtension) Security() TrueSecurity {
+	return extension.data.base.Security()
 }
 
 func (extension *SolarSystemExtension) AddJump(jumpType string, destinationId Id) *JumpBuilder {

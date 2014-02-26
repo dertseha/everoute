@@ -30,11 +30,11 @@ func (builder *UniverseBuilder) Build() Universe {
 	return universe
 }
 
-func (builder *UniverseBuilder) AddSolarSystem(id Id, constellationId Id, regionId Id, galaxyId Id, location Location) {
+func (builder *UniverseBuilder) AddSolarSystem(id Id, constellationId Id, regionId Id, galaxyId GalaxyId, location Location, security TrueSecurity) {
 	var data, ok = builder.solarSystemExtensions[id]
 
 	if !ok {
-		data = newSolarSystemExtensionData(newSolarSystem(id, constellationId, regionId, galaxyId, location))
+		data = newSolarSystemExtensionData(newSolarSystem(id, constellationId, regionId, galaxyId, location, security))
 		builder.solarSystemExtensions[id] = data
 	} else {
 		panic(fmt.Sprintf("Solar System %d already exists.", id))

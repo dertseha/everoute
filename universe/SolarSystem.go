@@ -2,8 +2,9 @@ package universe
 
 type SolarSystem interface {
 	Id() Id
-	GalaxyId() Id
+	GalaxyId() GalaxyId
 	RegionId() Id
 	ConstellationId() Id
 	Location() Location
+	Security() TrueSecurity
 }

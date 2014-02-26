@@ -5,14 +5,6 @@ import "github.com/dertseha/everoute/universe"
 const MetersPerAu float64 = 149597870700
 const MetersPerLy float64 = MetersPerAu * 63241
 
-func isNewEdenSystem(system *universe.SolarSystemExtension) bool {
-	return system.GalaxyId() == 9
-}
-
-func isHighSecSystem(system *universe.SolarSystemExtension) bool {
-	return false
-}
-
 func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 	highSecSystems := make([]universe.SolarSystemExtension, 0)
 	nonHighSecSystems := make([]universe.SolarSystemExtension, 0)
@@ -21,8 +13,8 @@ func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 	for _, id := range ids {
 		extension := builder.ExtendSolarSystem(id)
 
-		if isNewEdenSystem(&extension) {
-			if isHighSecSystem(&extension) {
+		if extension.GalaxyId() == universe.NewEdenId {
+			if extension.Security().IsHighSec() {
 				highSecSystems = append(highSecSystems, extension)
 			} else {
 				nonHighSecSystems = append(nonHighSecSystems, extension)

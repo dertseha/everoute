@@ -29,10 +29,14 @@ func (this *extendedSolarSystem) RegionId() Id {
 	return this.base.RegionId()
 }
 
-func (this *extendedSolarSystem) GalaxyId() Id {
+func (this *extendedSolarSystem) GalaxyId() GalaxyId {
 	return this.base.GalaxyId()
 }
 
 func (this *extendedSolarSystem) Location() Location {
 	return this.base.Location()
+}
+
+func (this *extendedSolarSystem) Security() TrueSecurity {
+	return this.base.Security()
 }
