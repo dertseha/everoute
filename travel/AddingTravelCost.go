@@ -2,27 +2,31 @@ package travel
 
 import "github.com/dertseha/everoute/universe"
 
-type AddingTravelCost struct {
+type addingTravelCost struct {
 	costType string
 	value    float64
 }
 
-func (cost *AddingTravelCost) Type() string {
+func AddingTravelCost(costType string, value float64) universe.TravelCost {
+	cost := &addingTravelCost{
+		costType: costType,
+		value:    value}
+
+	return cost
+}
+
+func (cost *addingTravelCost) Type() string {
 	return cost.costType
 }
 
-func (cost *AddingTravelCost) Value() float64 {
+func (cost *addingTravelCost) Value() float64 {
 	return cost.value
 }
 
-func (cost *AddingTravelCost) Join(other universe.TravelCost) universe.TravelCost {
+func (cost *addingTravelCost) Join(other universe.TravelCost) universe.TravelCost {
 	if cost.costType != other.Type() {
 		panic("Cost type mismatch")
 	}
 
-	result := AddingTravelCost{
-		costType: cost.costType,
-		value:    cost.value + other.Value()}
-
-	return &result
+	return AddingTravelCost(cost.costType, cost.value+other.Value())
 }
