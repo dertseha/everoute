@@ -26,7 +26,7 @@ func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 		for _, other := range nonHighSecSystems {
 			distance := source.Location().DistanceTo(other.Location()) / MetersPerLy
 			if distance <= limit {
-				source.AddJump("jumpDrive", other.Id())
+				source.AddJump(JumpType, other.Id())
 			}
 		}
 	}
@@ -39,8 +39,8 @@ func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 			distance := source.Location().DistanceTo(other.Location()) / MetersPerLy
 
 			if distance <= limit {
-				source.AddJump("jumpDrive", other.Id())
-				other.AddJump("jumpDrive", source.Id())
+				source.AddJump(JumpType, other.Id())
+				other.AddJump(JumpType, source.Id())
 			}
 		}
 	}
