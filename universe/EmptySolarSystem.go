@@ -44,3 +44,11 @@ func (this *emptySolarSystem) Location() Location {
 func (this *emptySolarSystem) Security() TrueSecurity {
 	return this.security
 }
+
+func (this *emptySolarSystem) Jumps(jumpType string) []*Jump {
+	return nil
+}
+
+func (this *emptySolarSystem) Costs() []TravelCost {
+	return nil
+}

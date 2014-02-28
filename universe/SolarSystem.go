@@ -7,4 +7,6 @@ type SolarSystem interface {
 	ConstellationId() Id
 	Location() Location
 	Security() TrueSecurity
+	Jumps(jumpType string) []*Jump
+	Costs() []TravelCost
 }
