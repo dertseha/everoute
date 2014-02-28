@@ -2,7 +2,6 @@ package jumpgate
 
 import (
 	"github.com/dertseha/everoute/travel"
-	"github.com/dertseha/everoute/travel/capabilities"
 	"github.com/dertseha/everoute/universe"
 )
 
@@ -10,7 +9,7 @@ type jumpGateTravelCapability struct {
 	universe universe.Universe
 }
 
-func JumpGateTravelCapability(universe universe.Universe) capabilities.TravelCapability {
+func JumpGateTravelCapability(universe universe.Universe) travel.TravelCapability {
 	return &jumpGateTravelCapability{universe: universe}
 }
 

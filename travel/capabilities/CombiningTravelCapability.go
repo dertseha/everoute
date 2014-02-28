@@ -3,11 +3,11 @@ package capabilities
 import "github.com/dertseha/everoute/travel"
 
 type combiningTravelCapability struct {
-	capabilities []TravelCapability
+	capabilities []travel.TravelCapability
 }
 
-func CombiningTravelCapability(capabilities []TravelCapability) TravelCapability {
-	return &combiningTravelCapability{append(make([]TravelCapability, 0, len(capabilities)), capabilities...)}
+func CombiningTravelCapability(capabilities []travel.TravelCapability) travel.TravelCapability {
+	return &combiningTravelCapability{append(make([]travel.TravelCapability, 0, len(capabilities)), capabilities...)}
 }
 
 func (combine *combiningTravelCapability) NextPaths(origin *travel.Path) []*travel.Path {
