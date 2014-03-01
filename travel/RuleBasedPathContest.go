@@ -18,9 +18,9 @@ func (contest *ruleBasedPathContest) Enter(path *Path) bool {
 	var destinationKey = path.DestinationKey()
 	var oldPath, existing = contest.pathsByDestinationKey[destinationKey]
 
-	if existing && (contest.rule.Compare(path.CostSum(), oldPath.CostSum()) >= 0) {
+	if !path.IsStart() && !contest.isPathStillCurrent(path.Previous()) {
 		result = false
-	} else if !path.IsStart() && !contest.isPathStillCurrent(path.Previous()) {
+	} else if existing && (oldPath != path) && (contest.rule.Compare(path.CostSum(), oldPath.CostSum()) >= 0) {
 		result = false
 	} else {
 		contest.pathsByDestinationKey[destinationKey] = path
@@ -31,19 +31,10 @@ func (contest *ruleBasedPathContest) Enter(path *Path) bool {
 
 func (contest *ruleBasedPathContest) isPathStillCurrent(path *Path) bool {
 	var entry = path
-	var result = false
-	var isEntryCurrent = func() bool {
-		var key = entry.DestinationKey()
-		var path, existing = contest.pathsByDestinationKey[key]
 
-		return existing && path == entry
-	}
-
-	result = isEntryCurrent()
-	for result && !entry.IsStart() {
+	for (contest.pathsByDestinationKey[entry.DestinationKey()] == entry) && !entry.IsStart() {
 		entry = entry.Previous()
-		result = isEntryCurrent()
 	}
 
-	return result
+	return entry.IsStart()
 }
