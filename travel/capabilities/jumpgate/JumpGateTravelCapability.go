@@ -13,10 +13,10 @@ func JumpGateTravelCapability(universe universe.Universe) travel.TravelCapabilit
 	return &jumpGateTravelCapability{universe: universe}
 }
 
-func (capability *jumpGateTravelCapability) NextPaths(origin *travel.Path) []*travel.Path {
+func (capability *jumpGateTravelCapability) NextPaths(origin travel.Path) []travel.Path {
 	var solarSystem = capability.universe.SolarSystem(origin.Step().SolarSystemId())
 	var jumps = solarSystem.Jumps(JumpType)
-	var result = make([]*travel.Path, len(jumps))
+	var result = make([]travel.Path, len(jumps))
 
 	for i, jump := range jumps {
 		var destination = capability.universe.SolarSystem(jump.DestinationId())

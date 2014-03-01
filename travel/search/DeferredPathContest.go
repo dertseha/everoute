@@ -8,7 +8,7 @@ type DeferredPathContestRequest interface {
 
 type deferredPathContestRequest struct {
 	contest travel.PathContest
-	path    *travel.Path
+	path    travel.Path
 	result  chan bool
 }
 
@@ -30,7 +30,7 @@ func DeferredPathContest(contest travel.PathContest, callback chan DeferredPathC
 	return deferredContest
 }
 
-func (contest *deferredPathContest) Enter(path *travel.Path) bool {
+func (contest *deferredPathContest) Enter(path travel.Path) bool {
 	request := &deferredPathContestRequest{
 		contest: contest.contest,
 		path:    path,

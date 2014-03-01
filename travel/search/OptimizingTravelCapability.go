@@ -17,8 +17,8 @@ func newOptimizingTravelCapability(capability travel.TravelCapability, contest t
 	return result
 }
 
-func (optimizing *optimizingTravelCapability) NextPaths(origin *travel.Path) []*travel.Path {
-	var best = make(map[string]*travel.Path)
+func (optimizing *optimizingTravelCapability) NextPaths(origin travel.Path) []travel.Path {
+	var best = make(map[string]travel.Path)
 
 	if optimizing.contest.Enter(origin) {
 		var temp = optimizing.capability.NextPaths(origin)
@@ -32,7 +32,7 @@ func (optimizing *optimizingTravelCapability) NextPaths(origin *travel.Path) []*
 		}
 	}
 
-	result := make([]*travel.Path, 0, len(best))
+	result := make([]travel.Path, 0, len(best))
 	for _, foundPath := range best {
 		result = append(result, foundPath)
 	}

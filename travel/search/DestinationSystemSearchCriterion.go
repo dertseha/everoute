@@ -13,10 +13,10 @@ func DestinationSystemSearchCriterion(solarSystemId universe.Id) SearchCriterion
 	return &destinationSystemSearchCriterion{solarSystemId: solarSystemId}
 }
 
-func (criterion *destinationSystemSearchCriterion) IsDesired(path *travel.Path) bool {
+func (criterion *destinationSystemSearchCriterion) IsDesired(path travel.Path) bool {
 	return path.Step().SolarSystemId() == criterion.solarSystemId
 }
 
-func (criterion *destinationSystemSearchCriterion) ShouldSearchContinueWith(path *travel.Path, results []*travel.Path) bool {
+func (criterion *destinationSystemSearchCriterion) ShouldSearchContinueWith(path travel.Path, results []travel.Path) bool {
 	return path.Step().SolarSystemId() != criterion.solarSystemId
 }

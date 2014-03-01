@@ -17,8 +17,8 @@ func (request leafFinishedRequest) Process() {
 type leafFoundRequest struct {
 	criterion   SearchCriterion
 	collector   PathSearchResultCollector
-	path        *travel.Path
-	leafStarter func(*travel.Path)
+	path        travel.Path
+	leafStarter func(travel.Path)
 }
 
 func (request leafFoundRequest) Process() {
@@ -30,7 +30,7 @@ func (request leafFoundRequest) Process() {
 	}
 }
 
-func FindPath(start *travel.Path, capability travel.TravelCapability, rule travel.TravelRule,
+func FindPath(start travel.Path, capability travel.TravelCapability, rule travel.TravelRule,
 	criterion SearchCriterion, collector PathSearchResultCollector, searchDone chan int) {
 	var ruleContest = travel.RuleBasedPathContest(rule)
 	var contestCallback = make(chan DeferredPathContestRequest)
@@ -41,13 +41,13 @@ func FindPath(start *travel.Path, capability travel.TravelCapability, rule trave
 		var leafRequests = make(chan leafRequest)
 		var leavesActive = 0
 
-		var leaf func(path *travel.Path)
-		var startLeaf = func(path *travel.Path) {
+		var leaf func(path travel.Path)
+		var startLeaf = func(path travel.Path) {
 			leavesActive++
 			go leaf(path)
 		}
 
-		leaf = func(path *travel.Path) {
+		leaf = func(path travel.Path) {
 			var nextPaths = optimizingCapability.NextPaths(path)
 
 			for _, nextPath := range nextPaths {

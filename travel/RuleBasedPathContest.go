@@ -2,18 +2,18 @@ package travel
 
 type ruleBasedPathContest struct {
 	rule                  TravelRule
-	pathsByDestinationKey map[string]*Path
+	pathsByDestinationKey map[string]Path
 }
 
 func RuleBasedPathContest(rule TravelRule) PathContest {
 	contest := &ruleBasedPathContest{
 		rule: rule,
-		pathsByDestinationKey: make(map[string]*Path)}
+		pathsByDestinationKey: make(map[string]Path)}
 
 	return contest
 }
 
-func (contest *ruleBasedPathContest) Enter(path *Path) bool {
+func (contest *ruleBasedPathContest) Enter(path Path) bool {
 	var result = true
 	var destinationKey = path.DestinationKey()
 	var oldPath, existing = contest.pathsByDestinationKey[destinationKey]
@@ -29,7 +29,7 @@ func (contest *ruleBasedPathContest) Enter(path *Path) bool {
 	return result
 }
 
-func (contest *ruleBasedPathContest) isPathStillCurrent(path *Path) bool {
+func (contest *ruleBasedPathContest) isPathStillCurrent(path Path) bool {
 	var entry = path
 
 	for (contest.pathsByDestinationKey[entry.DestinationKey()] == entry) && !entry.IsStart() {
