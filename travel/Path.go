@@ -26,7 +26,7 @@ func extendPath(path Path, step *Step) Path {
 	var result = &chainedPath{
 		step:     step,
 		previous: path,
-		costSum:  NewTravelCostSum(costs)}
+		costSum:  path.CostSum().Add(costs)}
 
 	return result
 }

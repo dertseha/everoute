@@ -6,7 +6,7 @@ type combiningTravelCapability struct {
 	capabilities []travel.TravelCapability
 }
 
-func CombiningTravelCapability(capabilities []travel.TravelCapability) travel.TravelCapability {
+func CombiningTravelCapability(capabilities ...travel.TravelCapability) travel.TravelCapability {
 	return &combiningTravelCapability{append(make([]travel.TravelCapability, 0, len(capabilities)), capabilities...)}
 }
 

@@ -24,8 +24,11 @@ func NewTravelCostSum(initCosts []universe.TravelCost) *TravelCostSum {
 	return sum
 }
 
-func (sum *TravelCostSum) Add(cost universe.TravelCost) *TravelCostSum {
-	return NewTravelCostSum(append(sum.Total(), cost))
+func (sum *TravelCostSum) Add(costs []universe.TravelCost) *TravelCostSum {
+	var total = sum.Total()
+	var newCosts = append(make([]universe.TravelCost, 0, len(total)+len(costs)), total...)
+
+	return NewTravelCostSum(append(newCosts, costs...))
 }
 
 func (sum *TravelCostSum) Total() []universe.TravelCost {

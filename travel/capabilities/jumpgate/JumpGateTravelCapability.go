@@ -20,7 +20,7 @@ func (capability *jumpGateTravelCapability) NextPaths(origin travel.Path) []trav
 
 	for i, jump := range jumps {
 		var destination = capability.universe.SolarSystem(jump.DestinationId())
-		var builder = travel.NewStepBuilder(destination.Id()).WithEnterCosts(jump.Costs()).WithEnterCosts(destination.Costs())
+		var builder = travel.NewStepBuilder(destination.Id()).WithEnterCosts(jump.Costs()).WithContinueCosts(destination.Costs())
 
 		result[i] = origin.Extend(builder.Build())
 	}

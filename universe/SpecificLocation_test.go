@@ -10,7 +10,7 @@ import (
 func TestPositionRelativeToShouldReturnItselfForZero(t *testing.T) {
 	var location = SpecificLocation{util.Vector3d{10, 20, 30}}
 	var result = location.PositionRelativeTo(util.Vector3d{0, 0, 0})
-	var expected = util.Vector3d{10, 20, 30}
+	var expected = &util.Vector3d{10, 20, 30}
 
 	assert.Equal(t, expected, result)
 }
@@ -18,7 +18,7 @@ func TestPositionRelativeToShouldReturnItselfForZero(t *testing.T) {
 func TestPositionRelativeToShouldReturnRelativeVectorToAnotherPosition(t *testing.T) {
 	var location = SpecificLocation{util.Vector3d{10, -20, 30}}
 	var result = location.PositionRelativeTo(util.Vector3d{-5, 5, 5})
-	var expected = util.Vector3d{15, -25, 25}
+	var expected = &util.Vector3d{15, -25, 25}
 
 	assert.Equal(t, expected, result)
 }
@@ -32,7 +32,7 @@ func TestDistanceToShouldReturnZeroForItself(t *testing.T) {
 
 func TestDistanceToShouldReturnZeroForAnyLocation(t *testing.T) {
 	var location = SpecificLocation{util.Vector3d{10, -20, 30}}
-	var result = location.DistanceTo(&AnyLocation{})
+	var result = location.DistanceTo(AnyLocation())
 
 	assert.Equal(t, 0.0, result)
 }
