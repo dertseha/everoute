@@ -30,12 +30,35 @@ func (request leafFoundRequest) Process() {
 	}
 }
 
-func FindPath(start travel.Path, capability travel.TravelCapability, rule travel.TravelRule,
-	criterion SearchCriterion, collector PathSearchResultCollector, searchDone chan int) {
+func startOptimizingContest(rule travel.TravelRule, capability travel.TravelCapability, contestQuit chan int) travel.TravelCapability {
 	var ruleContest = travel.RuleBasedPathContest(rule)
 	var contestCallback = make(chan DeferredPathContestRequest, 50)
 	var contest = DeferredPathContest(ruleContest, contestCallback)
 	var optimizingCapability = newOptimizingTravelCapability(capability, contest)
+
+	var runContest = func() {
+		var active = true
+
+		for active {
+			select {
+			case request := <-contestCallback:
+				request.Process()
+			case <-contestQuit:
+				active = false
+			}
+		}
+		close(contestCallback)
+		close(contestQuit)
+	}
+	go runContest()
+
+	return optimizingCapability
+}
+
+func FindPath(start travel.Path, capability travel.TravelCapability, rule travel.TravelRule,
+	criterion SearchCriterion, collector PathSearchResultCollector, searchDone chan int) {
+	var contestQuit = make(chan int)
+	var optimizingCapability = startOptimizingContest(rule, capability, contestQuit)
 
 	var search = func() {
 		var leafRequests = make(chan leafRequest, 50)
@@ -71,15 +94,13 @@ func FindPath(start travel.Path, capability travel.TravelCapability, rule travel
 
 		for leavesActive > 0 {
 			select {
-			case request := <-contestCallback:
-				request.Process()
 			case request := <-leafRequests:
 				request.Process()
 			}
 		}
 
 		searchDone <- 0
-		close(contestCallback)
+		contestQuit <- 0
 		close(leafRequests)
 	}
 
