@@ -1,8 +1,6 @@
 package search
 
-import (
-	"github.com/dertseha/everoute/travel"
-)
+import "github.com/dertseha/everoute/travel"
 
 type optimizingTravelCapability struct {
 	capability travel.TravelCapability
