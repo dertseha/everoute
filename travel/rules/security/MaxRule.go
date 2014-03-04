@@ -1,12 +1,15 @@
 package security
 
-import "github.com/dertseha/everoute/travel"
+import (
+	"github.com/dertseha/everoute/travel"
+	"github.com/dertseha/everoute/universe"
+)
 
 type maxRule struct {
 	limit int
 }
 
-func (rule *maxRule) Compare(sumA *travel.TravelCostSum, sumB *travel.TravelCostSum) float64 {
+func (rule *maxRule) Compare(sumA *universe.TravelCostSum, sumB *universe.TravelCostSum) float64 {
 	var valueA = sumSecurityCosts(sumA, rule.limit, 10)
 	var valueB = sumSecurityCosts(sumB, rule.limit, 10)
 

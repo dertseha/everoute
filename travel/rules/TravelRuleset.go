@@ -2,6 +2,7 @@ package rules
 
 import (
 	"github.com/dertseha/everoute/travel"
+	"github.com/dertseha/everoute/universe"
 )
 
 type travelRuleset struct {
@@ -15,7 +16,7 @@ func TravelRuleset(rules ...travel.TravelRule) travel.TravelRule {
 	return result
 }
 
-func (ruleset *travelRuleset) Compare(sumA *travel.TravelCostSum, sumB *travel.TravelCostSum) float64 {
+func (ruleset *travelRuleset) Compare(sumA *universe.TravelCostSum, sumB *universe.TravelCostSum) float64 {
 	var result = 0.0
 	var ruleCount = len(ruleset.rules)
 

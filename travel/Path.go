@@ -1,8 +1,10 @@
 package travel
 
+import "github.com/dertseha/everoute/universe"
+
 type Path interface {
 	DestinationKey() string
-	CostSum() *TravelCostSum
+	CostSum() *universe.TravelCostSum
 	IsStart() bool
 	Previous() Path
 	Extend(step *Step) Path
@@ -12,21 +14,20 @@ type Path interface {
 
 type chainedPath struct {
 	step     *Step
-	costSum  *TravelCostSum
+	costSum  *universe.TravelCostSum
 	previous Path
 }
 
 type startPath struct {
 	step    *Step
-	costSum *TravelCostSum
+	costSum *universe.TravelCostSum
 }
 
 func extendPath(path Path, step *Step) Path {
-	var costs = append(path.Step().ContinueCosts(), step.EnterCosts()...)
 	var result = &chainedPath{
 		step:     step,
 		previous: path,
-		costSum:  path.CostSum().Add(costs)}
+		costSum:  path.CostSum().Add(path.Step().ContinueCosts()).Add(step.EnterCosts())}
 
 	return result
 }
@@ -35,7 +36,7 @@ func (path *chainedPath) DestinationKey() string {
 	return path.step.Key()
 }
 
-func (path *chainedPath) CostSum() *TravelCostSum {
+func (path *chainedPath) CostSum() *universe.TravelCostSum {
 	return path.costSum
 }
 
@@ -78,7 +79,7 @@ func (path *startPath) DestinationKey() string {
 	return path.step.Key()
 }
 
-func (path *startPath) CostSum() *TravelCostSum {
+func (path *startPath) CostSum() *universe.TravelCostSum {
 	return path.costSum
 }
 
@@ -108,7 +109,7 @@ func (path *startPath) Steps() []*Step {
 func NewPath(step *Step) Path {
 	var path = &startPath{
 		step:    step,
-		costSum: NewTravelCostSum(step.EnterCosts())}
+		costSum: step.EnterCosts()}
 
 	return path
 }

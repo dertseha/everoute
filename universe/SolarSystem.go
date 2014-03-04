@@ -8,5 +8,5 @@ type SolarSystem interface {
 	Location() Location
 	Security() TrueSecurity
 	Jumps(jumpType string) []*Jump
-	Costs() []TravelCost
+	Costs() *TravelCostSum
 }

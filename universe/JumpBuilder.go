@@ -5,7 +5,7 @@ type JumpBuilder struct {
 	fromLocation Location
 	toSystemId   Id
 	toLocation   Location
-	costs        []TravelCost
+	costs        *TravelCostSum
 }
 
 func newJumpBuilder(jumpType string, destinationId Id) *JumpBuilder {
@@ -14,7 +14,7 @@ func newJumpBuilder(jumpType string, destinationId Id) *JumpBuilder {
 		toSystemId:   destinationId,
 		fromLocation: AnyLocation(),
 		toLocation:   AnyLocation(),
-		costs:        make([]TravelCost, 0)}
+		costs:        EmptyTravelCostSum()}
 
 	return result
 }
@@ -25,7 +25,7 @@ func (builder *JumpBuilder) Build() *Jump {
 		fromLocation: builder.fromLocation,
 		toSystemId:   builder.toSystemId,
 		toLocation:   builder.toLocation,
-		costs:        append(make([]TravelCost, 0), builder.costs...)}
+		costs:        builder.costs}
 
 	return result
 }
@@ -43,7 +43,7 @@ func (builder *JumpBuilder) To(location Location) *JumpBuilder {
 }
 
 func (builder *JumpBuilder) AddCost(cost TravelCost) *JumpBuilder {
-	builder.costs = append(builder.costs, cost)
+	builder.costs = builder.costs.Add(NewTravelCostSum(cost))
 
 	return builder
 }

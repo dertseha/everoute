@@ -13,6 +13,6 @@ func NaturalOrderTravelRule(nullCost universe.TravelCost) travel.TravelRule {
 	return &naturalOrderTravelRule{nullCost}
 }
 
-func (rule *naturalOrderTravelRule) Compare(sumA *travel.TravelCostSum, sumB *travel.TravelCostSum) float64 {
+func (rule *naturalOrderTravelRule) Compare(sumA *universe.TravelCostSum, sumB *universe.TravelCostSum) float64 {
 	return sumA.Cost(rule.nullCost).Value() - sumB.Cost(rule.nullCost).Value()
 }

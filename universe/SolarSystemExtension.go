@@ -29,5 +29,5 @@ func (extension *SolarSystemExtension) AddJump(jumpType string, destinationId Id
 }
 
 func (extension *SolarSystemExtension) AddCost(cost TravelCost) {
-	extension.data.costs = append(extension.data.costs, cost)
+	extension.data.costs = extension.data.costs.Add(NewTravelCostSum(cost))
 }

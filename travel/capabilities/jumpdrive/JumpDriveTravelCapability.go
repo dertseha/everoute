@@ -15,40 +15,21 @@ func JumpDriveTravelCapability(universe universe.Universe, distanceLimitLy float
 	return &jumpDriveTravelCapability{universe: universe, distanceLimitLy: distanceLimitLy}
 }
 
-func reduceCosts(costs []universe.TravelCost, f func(bool, universe.TravelCost) bool, init bool) bool {
-	var result = init
-
-	for _, cost := range costs {
-		result = f(result, cost)
-	}
-
-	return result
-}
-
-func (capability *jumpDriveTravelCapability) jumpsWithinLimit(jumps []*universe.Jump) []*universe.Jump {
-	var jumpsWithinLimit = make([]*universe.Jump, 0, len(jumps))
-
-	for _, jump := range jumps {
-		if reduceCosts(jump.Costs(), func(accumulator bool, cost universe.TravelCost) bool {
-			return accumulator && ((cost.Type() != jumpdistance.CostType) || (cost.Value() <= capability.distanceLimitLy))
-		}, true) {
-			jumpsWithinLimit = append(jumpsWithinLimit, jump)
-		}
-	}
-
-	return jumpsWithinLimit
-}
-
 func (capability *jumpDriveTravelCapability) NextPaths(origin travel.Path) []travel.Path {
 	var solarSystem = capability.universe.SolarSystem(origin.Step().SolarSystemId())
-	var jumps = capability.jumpsWithinLimit(solarSystem.Jumps(JumpType))
-	var result = make([]travel.Path, len(jumps))
+	var jumps = solarSystem.Jumps(JumpType)
+	var result = make([]travel.Path, 0, len(jumps))
+	var nullCost = jumpdistance.NullCost()
 
-	for i, jump := range jumps {
-		var destination = capability.universe.SolarSystem(jump.DestinationId())
-		var builder = travel.NewStepBuilder(destination.Id()).WithEnterCosts(jump.Costs()).WithContinueCosts(destination.Costs())
+	for _, jump := range jumps {
+		var cost = jump.Costs().Cost(nullCost)
 
-		result[i] = origin.Extend(builder.Build())
+		if cost.Value() <= capability.distanceLimitLy {
+			var destination = capability.universe.SolarSystem(jump.DestinationId())
+			var builder = travel.NewStepBuilder(destination.Id()).WithEnterCosts(jump.Costs()).WithContinueCosts(destination.Costs())
+
+			result = append(result, origin.Extend(builder.Build()))
+		}
 	}
 
 	return result

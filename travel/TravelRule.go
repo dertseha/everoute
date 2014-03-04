@@ -1,5 +1,7 @@
 package travel
 
+import "github.com/dertseha/everoute/universe"
+
 type TravelRule interface {
-	Compare(sumA *TravelCostSum, sumB *TravelCostSum) float64
+	Compare(sumA *universe.TravelCostSum, sumB *universe.TravelCostSum) float64
 }

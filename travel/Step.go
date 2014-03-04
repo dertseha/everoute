@@ -8,17 +8,17 @@ import (
 type Step struct {
 	solarSystemId universe.Id
 	location      universe.Location
-	enterCosts    []universe.TravelCost
-	continueCosts []universe.TravelCost
+	enterCosts    *universe.TravelCostSum
+	continueCosts *universe.TravelCostSum
 	key           string
 }
 
-func NewStep(solarSystemId universe.Id, location universe.Location, enterCosts []universe.TravelCost, continueCosts []universe.TravelCost) *Step {
+func NewStep(solarSystemId universe.Id, location universe.Location, enterCosts *universe.TravelCostSum, continueCosts *universe.TravelCostSum) *Step {
 	step := &Step{
 		solarSystemId: solarSystemId,
 		location:      location,
-		enterCosts:    append(make([]universe.TravelCost, 0), enterCosts...),
-		continueCosts: append(make([]universe.TravelCost, 0), continueCosts...),
+		enterCosts:    enterCosts,
+		continueCosts: continueCosts,
 		key:           fmt.Sprintf("%d@%s", solarSystemId, location)}
 
 	return step
@@ -40,10 +40,10 @@ func (step *Step) Location() universe.Location {
 	return step.location
 }
 
-func (step *Step) EnterCosts() []universe.TravelCost {
-	return append(make([]universe.TravelCost, 0), step.enterCosts...)
+func (step *Step) EnterCosts() *universe.TravelCostSum {
+	return step.enterCosts
 }
 
-func (step *Step) ContinueCosts() []universe.TravelCost {
-	return append(make([]universe.TravelCost, 0), step.continueCosts...)
+func (step *Step) ContinueCosts() *universe.TravelCostSum {
+	return step.continueCosts
 }

@@ -5,7 +5,7 @@ type Jump struct {
 	fromLocation Location
 	toSystemId   Id
 	toLocation   Location
-	costs        []TravelCost
+	costs        *TravelCostSum
 }
 
 func (jump *Jump) Type() string {
@@ -24,6 +24,6 @@ func (jump *Jump) DestinationLocation() Location {
 	return jump.toLocation
 }
 
-func (jump *Jump) Costs() []TravelCost {
+func (jump *Jump) Costs() *TravelCostSum {
 	return jump.costs
 }

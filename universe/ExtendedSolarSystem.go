@@ -3,14 +3,14 @@ package universe
 type extendedSolarSystem struct {
 	base  SolarSystem
 	jumps map[string][]*Jump
-	costs []TravelCost
+	costs *TravelCostSum
 }
 
 func newExtendedSolarSystem(data *solarSystemExtensionData) SolarSystem {
 	result := &extendedSolarSystem{
 		base:  data.base,
 		jumps: make(map[string][]*Jump),
-		costs: append(make([]TravelCost, 0, len(data.costs)), data.costs...)}
+		costs: data.costs}
 
 	for _, builder := range data.jumpBuilder {
 		var jump = builder.Build()
@@ -60,6 +60,6 @@ func (this *extendedSolarSystem) Jumps(jumpType string) []*Jump {
 	return result
 }
 
-func (this *extendedSolarSystem) Costs() []TravelCost {
-	return append(this.base.Costs(), this.costs...)
+func (this *extendedSolarSystem) Costs() *TravelCostSum {
+	return this.base.Costs().Add(this.costs)
 }

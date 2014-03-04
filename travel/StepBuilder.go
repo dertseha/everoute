@@ -5,15 +5,16 @@ import "github.com/dertseha/everoute/universe"
 type StepBuilder struct {
 	solarSystemId universe.Id
 	to            universe.Location
-	enterCosts    []universe.TravelCost
-	continueCosts []universe.TravelCost
+	enterCosts    *universe.TravelCostSum
+	continueCosts *universe.TravelCostSum
 }
 
 func NewStepBuilder(solarSystemId universe.Id) *StepBuilder {
-	var builder = &StepBuilder{solarSystemId: solarSystemId,
+	var builder = &StepBuilder{
+		solarSystemId: solarSystemId,
 		to:            universe.AnyLocation(),
-		enterCosts:    nil,
-		continueCosts: nil}
+		enterCosts:    universe.EmptyTravelCostSum(),
+		continueCosts: universe.EmptyTravelCostSum()}
 
 	return builder
 }
@@ -28,14 +29,14 @@ func (builder *StepBuilder) To(location universe.Location) *StepBuilder {
 	return builder
 }
 
-func (builder *StepBuilder) WithEnterCosts(costs []universe.TravelCost) *StepBuilder {
-	builder.enterCosts = append(make([]universe.TravelCost, 0), costs...)
+func (builder *StepBuilder) WithEnterCosts(costs *universe.TravelCostSum) *StepBuilder {
+	builder.enterCosts = costs
 
 	return builder
 }
 
-func (builder *StepBuilder) WithContinueCosts(costs []universe.TravelCost) *StepBuilder {
-	builder.continueCosts = append(make([]universe.TravelCost, 0), costs...)
+func (builder *StepBuilder) WithContinueCosts(costs *universe.TravelCostSum) *StepBuilder {
+	builder.continueCosts = costs
 
 	return builder
 }

@@ -49,6 +49,6 @@ func (this *emptySolarSystem) Jumps(jumpType string) []*Jump {
 	return nil
 }
 
-func (this *emptySolarSystem) Costs() []TravelCost {
-	return nil
+func (this *emptySolarSystem) Costs() *TravelCostSum {
+	return EmptyTravelCostSum()
 }
