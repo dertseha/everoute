@@ -56,7 +56,7 @@ func startOptimizingContest(rule travel.TravelRule, capability travel.TravelCapa
 }
 
 func FindPath(start travel.Path, capability travel.TravelCapability, rule travel.TravelRule,
-	criterion SearchCriterion, collector PathSearchResultCollector, searchDone chan int) {
+	criterion SearchCriterion, collector PathSearchResultCollector, searchDone func()) {
 	var contestQuit = make(chan int)
 	var optimizingCapability = startOptimizingContest(rule, capability, contestQuit)
 
@@ -99,7 +99,7 @@ func FindPath(start travel.Path, capability travel.TravelCapability, rule travel
 			}
 		}
 
-		searchDone <- 0
+		go searchDone()
 		contestQuit <- 0
 		close(leafRequests)
 	}

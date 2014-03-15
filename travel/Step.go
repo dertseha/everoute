@@ -25,7 +25,7 @@ func NewStep(solarSystemId universe.Id, location universe.Location, enterCosts *
 }
 
 func (step *Step) AsFirstStep() *Step {
-	return NewStep(step.solarSystemId, step.location, nil, nil)
+	return NewStep(step.solarSystemId, step.location, universe.EmptyTravelCostSum(), universe.EmptyTravelCostSum())
 }
 
 func (step *Step) Key() string {
