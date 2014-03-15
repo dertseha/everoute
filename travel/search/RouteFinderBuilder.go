@@ -73,7 +73,7 @@ func (builder *routeFinderBuilder) Build() RouteFinder {
 
 		populationLimit:    builder.populationLimit,
 		generationLimit:    builder.generationLimit,
-		uncontestedLimit:   builder.populationLimit * 20, //builder.generationLimit / 5,
+		uncontestedLimit:   builder.populationLimit * 20,
 		mutationPercentage: builder.mutationPercentage,
 
 		executor: util.SingleThreadExecutor(builder.populationLimit * 4),
