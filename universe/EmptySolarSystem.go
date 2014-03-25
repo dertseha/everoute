@@ -45,7 +45,7 @@ func (this *emptySolarSystem) Security() TrueSecurity {
 	return this.security
 }
 
-func (this *emptySolarSystem) Jumps(jumpType string) []*Jump {
+func (this *emptySolarSystem) Jumps(jumpType string) []Jump {
 	return nil
 }
 

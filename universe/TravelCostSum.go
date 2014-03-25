@@ -14,8 +14,16 @@ func EmptyTravelCostSum() *TravelCostSum {
 	return emptyTravelCostSum
 }
 
+func SingleTravelCostSum(cost TravelCost) *TravelCostSum {
+	sum := newTravelCostSum()
+
+	sum.costs[cost.Type()] = cost
+
+	return sum
+}
+
 func NewTravelCostSum(initCosts ...TravelCost) *TravelCostSum {
-	var sum = newTravelCostSum()
+	sum := newTravelCostSum()
 
 	for _, cost := range initCosts {
 		costType := cost.Type()

@@ -20,7 +20,11 @@ func (extension *SolarSystemExtension) Security() TrueSecurity {
 	return extension.data.base.Security()
 }
 
-func (extension *SolarSystemExtension) AddJump(jumpType string, destinationId Id) *JumpBuilder {
+func (extension *SolarSystemExtension) AddJump(jump Jump) {
+	extension.data.jumps = append(extension.data.jumps, jump)
+}
+
+func (extension *SolarSystemExtension) BuildJump(jumpType string, destinationId Id) *JumpBuilder {
 	result := newJumpBuilder(jumpType, destinationId)
 
 	extension.data.jumpBuilder = append(extension.data.jumpBuilder, result)

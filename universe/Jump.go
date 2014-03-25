@@ -1,6 +1,14 @@
 package universe
 
-type Jump struct {
+type Jump interface {
+	Type() string
+	SourceLocation() Location
+	DestinationId() Id
+	DestinationLocation() Location
+	Costs() *TravelCostSum
+}
+
+type dataJump struct {
 	jumpType     string
 	fromLocation Location
 	toSystemId   Id
@@ -8,22 +16,22 @@ type Jump struct {
 	costs        *TravelCostSum
 }
 
-func (jump *Jump) Type() string {
+func (jump *dataJump) Type() string {
 	return jump.jumpType
 }
 
-func (jump *Jump) SourceLocation() Location {
+func (jump *dataJump) SourceLocation() Location {
 	return jump.fromLocation
 }
 
-func (jump *Jump) DestinationId() Id {
+func (jump *dataJump) DestinationId() Id {
 	return jump.toSystemId
 }
 
-func (jump *Jump) DestinationLocation() Location {
+func (jump *dataJump) DestinationLocation() Location {
 	return jump.toLocation
 }
 
-func (jump *Jump) Costs() *TravelCostSum {
+func (jump *dataJump) Costs() *TravelCostSum {
 	return jump.costs
 }

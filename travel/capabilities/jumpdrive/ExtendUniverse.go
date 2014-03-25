@@ -1,9 +1,6 @@
 package jumpdrive
 
-import (
-	"github.com/dertseha/everoute/travel/rules/jumpdistance"
-	"github.com/dertseha/everoute/universe"
-)
+import "github.com/dertseha/everoute/universe"
 
 const MetersPerAu float64 = 149597870700
 const MetersPerLy float64 = MetersPerAu * 63241
@@ -29,7 +26,7 @@ func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 		for _, other := range nonHighSecSystems {
 			distance := source.Location().DistanceTo(other.Location()) / MetersPerLy
 			if distance <= limit {
-				source.AddJump(JumpType, other.Id()).AddCost(jumpdistance.Cost(distance))
+				source.AddJump(Jump(other.Id(), distance))
 			}
 		}
 	}
@@ -42,9 +39,8 @@ func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 			distance := source.Location().DistanceTo(other.Location()) / MetersPerLy
 
 			if distance <= limit {
-				cost := jumpdistance.Cost(distance)
-				source.AddJump(JumpType, other.Id()).AddCost(cost)
-				other.AddJump(JumpType, source.Id()).AddCost(cost)
+				source.AddJump(Jump(other.Id(), distance))
+				other.AddJump(Jump(source.Id(), distance))
 			}
 		}
 	}

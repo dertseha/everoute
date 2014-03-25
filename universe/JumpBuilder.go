@@ -19,8 +19,8 @@ func newJumpBuilder(jumpType string, destinationId Id) *JumpBuilder {
 	return result
 }
 
-func (builder *JumpBuilder) Build() *Jump {
-	result := &Jump{
+func (builder *JumpBuilder) Build() Jump {
+	result := &dataJump{
 		jumpType:     builder.jumpType,
 		fromLocation: builder.fromLocation,
 		toSystemId:   builder.toSystemId,
