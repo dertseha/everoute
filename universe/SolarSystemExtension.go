@@ -33,5 +33,5 @@ func (extension *SolarSystemExtension) BuildJump(jumpType string, destinationId 
 }
 
 func (extension *SolarSystemExtension) AddCost(cost TravelCost) {
-	extension.data.costs = extension.data.costs.Add(NewTravelCostSum(cost))
+	extension.data.costs = extension.data.costs.Add(SingleTravelCostSum(cost))
 }

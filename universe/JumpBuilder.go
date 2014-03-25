@@ -43,7 +43,7 @@ func (builder *JumpBuilder) To(location Location) *JumpBuilder {
 }
 
 func (builder *JumpBuilder) AddCost(cost TravelCost) *JumpBuilder {
-	builder.costs = builder.costs.Add(NewTravelCostSum(cost))
+	builder.costs = builder.costs.Add(SingleTravelCostSum(cost))
 
 	return builder
 }

@@ -22,23 +22,6 @@ func SingleTravelCostSum(cost TravelCost) *TravelCostSum {
 	return sum
 }
 
-func NewTravelCostSum(initCosts ...TravelCost) *TravelCostSum {
-	sum := newTravelCostSum()
-
-	for _, cost := range initCosts {
-		costType := cost.Type()
-		sumCost, existing := sum.costs[costType]
-
-		if existing {
-			sum.costs[costType] = sumCost.Join(cost)
-		} else {
-			sum.costs[costType] = cost
-		}
-	}
-
-	return sum
-}
-
 func (sum *TravelCostSum) Add(other *TravelCostSum) *TravelCostSum {
 	var result = newTravelCostSum()
 
