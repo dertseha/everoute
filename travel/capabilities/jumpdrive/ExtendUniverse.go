@@ -1,9 +1,9 @@
 package jumpdrive
 
-import "github.com/dertseha/everoute/universe"
-
-const MetersPerAu float64 = 149597870700
-const MetersPerLy float64 = MetersPerAu * 63241
+import (
+	"github.com/dertseha/everoute/universe"
+	"github.com/dertseha/everoute/util"
+)
 
 func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 	highSecSystems := make([]universe.SolarSystemExtension, 0)
@@ -24,7 +24,7 @@ func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 
 	createJumpsFromHighSec := func(source *universe.SolarSystemExtension) {
 		for _, other := range nonHighSecSystems {
-			distance := source.Location().DistanceTo(other.Location()) / MetersPerLy
+			distance := source.Location().DistanceTo(other.Location()) / util.MetersPerLy
 			if distance <= limit {
 				source.AddJump(Jump(other.Id(), distance))
 			}
@@ -36,7 +36,7 @@ func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 
 		for i := startIndex; i < indexLimit; i++ {
 			other := nonHighSecSystems[i]
-			distance := source.Location().DistanceTo(other.Location()) / MetersPerLy
+			distance := source.Location().DistanceTo(other.Location()) / util.MetersPerLy
 
 			if distance <= limit {
 				source.AddJump(Jump(other.Id(), distance))
