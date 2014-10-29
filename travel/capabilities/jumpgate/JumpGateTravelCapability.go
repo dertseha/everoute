@@ -2,6 +2,7 @@ package jumpgate
 
 import (
 	"github.com/dertseha/everoute/travel"
+	"github.com/dertseha/everoute/travel/rules/warpdistance"
 	"github.com/dertseha/everoute/universe"
 )
 
@@ -19,8 +20,14 @@ func (capability *jumpGateTravelCapability) NextPaths(origin travel.Path) []trav
 	var result = make([]travel.Path, len(jumps))
 
 	for i, jump := range jumps {
-		var destination = capability.universe.SolarSystem(jump.DestinationId())
-		var builder = travel.NewStepBuilder(destination.Id()).WithEnterCosts(jump.Costs()).WithContinueCosts(destination.Costs())
+		destination := capability.universe.SolarSystem(jump.DestinationId())
+		warpDistance := origin.Step().Location().DistanceTo(jump.SourceLocation())
+		warpCosts := universe.SingleTravelCostSum(warpdistance.Cost(warpDistance))
+		builder := travel.NewStepBuilder(destination.Id())
+
+		builder.WithEnterCosts(warpCosts.Add(jump.Costs()))
+		builder.WithContinueCosts(destination.Costs())
+		builder.To(jump.DestinationLocation())
 
 		result[i] = origin.Extend(builder.Build())
 	}
