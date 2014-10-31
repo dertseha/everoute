@@ -33,5 +33,5 @@ func (suite *AnyLocationTestSuite) TestDistanceToReturnsZero(c *check.C) {
 func (suite *AnyLocationTestSuite) TestPositionRelativeToReturnsZeroVector(c *check.C) {
 	result := suite.location.PositionRelativeTo(util.Vector3d{10, 20, 30})
 
-	c.Assert(result, check.Equals, util.Vector3d{0.0, 0.0, 0.0})
+	c.Assert(result, check.DeepEquals, &util.Vector3d{0.0, 0.0, 0.0})
 }
