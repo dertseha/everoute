@@ -18,6 +18,8 @@ func (this *anyLocation) DistanceTo(other Location) float64 {
 
 var instance Location = new(anyLocation)
 
+// AnyLocation returns a location instance that represents a point that can be anywhere.
+// When compared to other locations, this location will always appear as if it were right at the other location.
 func AnyLocation() Location {
 	return instance
 }

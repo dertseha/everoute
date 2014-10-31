@@ -9,6 +9,7 @@ type emptySolarSystem struct {
 	security        TrueSecurity
 }
 
+// newSolarSystem returns a SolarSystem instance with provided parameters that is empty.
 func newSolarSystem(id Id, constellationId Id, regionId Id, galaxyId GalaxyId, location Location, security TrueSecurity) SolarSystem {
 	var system = &emptySolarSystem{
 		id:              id,

@@ -1,5 +1,6 @@
 package universe
 
+// Id is an arbitrary ID compatible with Eve Online IDs.
 type Id uint64
 
 type IdOrder []Id

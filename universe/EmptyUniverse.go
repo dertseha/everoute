@@ -4,6 +4,7 @@ import "fmt"
 
 type emptyUniverse struct{}
 
+// New returns an empty universe. This universe must first be extended using the method Extend().
 func New() Universe {
 	return new(emptyUniverse)
 }

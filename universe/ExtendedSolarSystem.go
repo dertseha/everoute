@@ -6,6 +6,7 @@ type extendedSolarSystem struct {
 	costs *TravelCostSum
 }
 
+// newExtendedSolarSystem returns a solar system instance that is based on the provided extension data.
 func newExtendedSolarSystem(data *solarSystemExtensionData) SolarSystem {
 	result := &extendedSolarSystem{
 		base:  data.base,
