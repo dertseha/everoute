@@ -1,55 +1,60 @@
 package universe
 
 import (
-	"github.com/dertseha/everoute/util"
-	"github.com/stvp/assert"
 	"math"
-	"testing"
+
+	"github.com/dertseha/everoute/util"
+
+	check "gopkg.in/check.v1"
 )
 
-func TestPositionRelativeToShouldReturnItselfForZero(t *testing.T) {
-	var location = SpecificLocation{util.Vector3d{10, 20, 30}}
-	var result = location.PositionRelativeTo(util.Vector3d{0, 0, 0})
-	var expected = &util.Vector3d{10, 20, 30}
+type SpecificLocationTestSuite struct{}
 
-	assert.Equal(t, expected, result)
+var _ = check.Suite(&SpecificLocationTestSuite{})
+
+func (suite *SpecificLocationTestSuite) TestPositionRelativeToShouldReturnItselfForZero(c *check.C) {
+	location := NewSpecificLocation(10, 20, 30)
+	result := location.PositionRelativeTo(util.Vector3d{0, 0, 0})
+	expected := &util.Vector3d{10, 20, 30}
+
+	c.Assert(result, check.Equals, expected)
 }
 
-func TestPositionRelativeToShouldReturnRelativeVectorToAnotherPosition(t *testing.T) {
-	var location = SpecificLocation{util.Vector3d{10, -20, 30}}
-	var result = location.PositionRelativeTo(util.Vector3d{-5, 5, 5})
-	var expected = &util.Vector3d{15, -25, 25}
+func (suite *SpecificLocationTestSuite) TestPositionRelativeToShouldReturnRelativeVectorToAnotherPosition(c *check.C) {
+	location := SpecificLocation{util.Vector3d{10, -20, 30}}
+	result := location.PositionRelativeTo(util.Vector3d{-5, 5, 5})
+	expected := &util.Vector3d{15, -25, 25}
 
-	assert.Equal(t, expected, result)
+	assert.Equal(result, check.Equals, expected)
 }
 
-func TestDistanceToShouldReturnZeroForItself(t *testing.T) {
-	var location = SpecificLocation{util.Vector3d{10, -20, 30}}
-	var result = location.DistanceTo(&location)
+func (suite *SpecificLocationTestSuite) TestDistanceToShouldReturnZeroForItself(c *check.C) {
+	location := SpecificLocation{util.Vector3d{10, -20, 30}}
+	result := location.DistanceTo(&location)
 
-	assert.Equal(t, 0.0, result)
+	c.Assert(result, check.Equals, 0.0)
 }
 
-func TestDistanceToShouldReturnZeroForAnyLocation(t *testing.T) {
-	var location = SpecificLocation{util.Vector3d{10, -20, 30}}
-	var result = location.DistanceTo(AnyLocation())
+func (suite *SpecificLocationTestSuite) TestDistanceToShouldReturnZeroForAnyLocation(c *check.C) {
+	location := SpecificLocation{util.Vector3d{10, -20, 30}}
+	result := location.DistanceTo(AnyLocation())
 
-	assert.Equal(t, 0.0, result)
+	c.Assert(result, check.Equals, 0.0)
 }
 
-func TestDistanceToShouldCalculateDistance1(t *testing.T) {
-	var location1 = SpecificLocation{util.Vector3d{10, 20, 30}}
-	var location2 = SpecificLocation{util.Vector3d{40, 80, -30}}
-	var result = location1.DistanceTo(&location2)
+func (suite *SpecificLocationTestSuite) TestDistanceToShouldCalculateDistance1(c *check.C) {
+	location1 := SpecificLocation{util.Vector3d{10, 20, 30}}
+	location2 := SpecificLocation{util.Vector3d{40, 80, -30}}
+	result := location1.DistanceTo(&location2)
 
-	assert.Equal(t, 90.0, result)
+	c.Assert(result, check.Equals, 90.0)
 }
 
-func TestDistanceToShouldCalculateDistance2(t *testing.T) {
-	var location1 = SpecificLocation{util.Vector3d{15, 49, 140}}
-	var location2 = SpecificLocation{util.Vector3d{120.5, -33, -9}}
-	var result = location1.DistanceTo(&location2)
-	var expected = 200.138
+func (suite *SpecificLocationTestSuite) TestDistanceToShouldCalculateDistance2(c *check.C) {
+	location1 := SpecificLocation{util.Vector3d{15, 49, 140}}
+	location2 := SpecificLocation{util.Vector3d{120.5, -33, -9}}
+	result := location1.DistanceTo(&location2)
+	expected := 200.138
 
-	assert.Equal(t, expected*1000, math.Trunc(result*1000))
+	c.Assert(math.Trunc(result*1000), check.Equals, expected*1000)
 }

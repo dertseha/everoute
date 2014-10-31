@@ -5,6 +5,7 @@ import (
 	"sort"
 )
 
+// UniverseBuilder is a helper to extend an existing Universe instance with further content.
 type UniverseBuilder struct {
 	base                  Universe
 	solarSystemExtensions map[Id]*solarSystemExtensionData
@@ -18,6 +19,7 @@ func newUniverseBuilder(universe Universe) *UniverseBuilder {
 	return builder
 }
 
+// Build returns an immutable Universe instance that is based on the current values of the builder.
 func (builder *UniverseBuilder) Build() Universe {
 	var universe = &extendedUniverse{
 		base:         builder.base,
@@ -30,10 +32,12 @@ func (builder *UniverseBuilder) Build() Universe {
 	return universe
 }
 
+// AddSolarSystem adds a basic solar system to the future universe.
+// This method panics if the universe already contains a solar system with this ID.
 func (builder *UniverseBuilder) AddSolarSystem(id Id, constellationId Id, regionId Id, galaxyId GalaxyId, location Location, security TrueSecurity) {
-	var data, ok = builder.solarSystemExtensions[id]
+	var data, exists = builder.solarSystemExtensions[id]
 
-	if !ok {
+	if !exists {
 		data = newSolarSystemExtensionData(newSolarSystem(id, constellationId, regionId, galaxyId, location, security))
 		builder.solarSystemExtensions[id] = data
 	} else {
@@ -41,15 +45,18 @@ func (builder *UniverseBuilder) AddSolarSystem(id Id, constellationId Id, region
 	}
 }
 
+// ExtendSolarSystem returns a SolarSystemExtension instance meant to extend a solar system already existing in the
+// universe.
+// This method panics if the solar sytem can not be found.
 func (builder *UniverseBuilder) ExtendSolarSystem(id Id) (extension SolarSystemExtension) {
-	var data, ok = builder.solarSystemExtensions[id]
+	var data, exists = builder.solarSystemExtensions[id]
 
-	if !ok && builder.base.HasSolarSystem(id) {
+	if !exists && builder.base.HasSolarSystem(id) {
 		data = newSolarSystemExtensionData(builder.base.SolarSystem(id))
 		builder.solarSystemExtensions[id] = data
 	}
-	_, ok = builder.solarSystemExtensions[id]
-	if ok {
+	_, exists = builder.solarSystemExtensions[id]
+	if exists {
 		extension = SolarSystemExtension{}
 		extension.data = data
 	} else {
@@ -59,6 +66,8 @@ func (builder *UniverseBuilder) ExtendSolarSystem(id Id) (extension SolarSystemE
 	return
 }
 
+// SolarSystemIds returns a sorted slice of all solar system ID values currently known to the builder. Both the
+// underlying universe and the already added solar systems are taken into account.
 func (builder *UniverseBuilder) SolarSystemIds() []Id {
 	var baseIds = builder.base.SolarSystemIds()
 	var ids = make([]Id, 0, len(builder.solarSystemExtensions))
