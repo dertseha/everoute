@@ -1,3 +1,6 @@
+[![Build Status][drone-image]][drone-url]
+[![Coverage Status][coveralls-image]][coveralls-url]
+
 ## everoute - Go library
 
 This Go library provides a route calculator and optimizer for ship travel in [EVE Online](https://www.eveonline.com/).
@@ -10,3 +13,8 @@ This library mirrors the implementation of [eve-route.js](https://github.com/der
 ## License
 
 The project is available under the terms of the **New BSD License** (see LICENSE file).
+
+[drone-url]: https://drone.io/github.com/dertseha/everoute/latest
+[drone-image]: https://drone.io/github.com/dertseha/everoute/status.png
+[coveralls-url]: https://coveralls.io/r/dertseha/everoute
+[coveralls-image]: https://coveralls.io/repos/dertseha/everoute/badge.png
