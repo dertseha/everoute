@@ -2,13 +2,21 @@ package travel
 
 import "github.com/dertseha/everoute/universe"
 
+// Path represents a single-linked list of steps. A path instance is always the end of the path so far.
 type Path interface {
+	// DestinationKey returns a value that uniquely represents the end of this path.
 	DestinationKey() string
+	// CostSum returns the total cost of the path so far. It is the total of all contained steps.
 	CostSum() *universe.TravelCostSum
+	// IsStart returns true for the start of a path.
 	IsStart() bool
+	// Previous returns the path instance of the previous step. This method panics if the path instance is the start.
 	Previous() Path
+	// Extend returns a new path instance based on this, combined with a new step.
 	Extend(step *Step) Path
+	// Step returns the step instance representing this path extension.
 	Step() *Step
+	// Steps returns a slice of steps of this path from its start to this instance.
 	Steps() []*Step
 }
 
@@ -106,6 +114,7 @@ func (path *startPath) Steps() []*Step {
 	return result
 }
 
+// NewPath returns a new path that starts with the provided step.
 func NewPath(step *Step) Path {
 	var path = &startPath{
 		step:    step,

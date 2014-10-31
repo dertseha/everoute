@@ -5,6 +5,8 @@ type ruleBasedPathContest struct {
 	pathsByDestinationKey map[string]Path
 }
 
+// RuleBasedPathContest returns a PathContest that is based on travel rules.
+// This contest will only accept paths that have not yet been superseded by cheaper paths.
 func RuleBasedPathContest(rule TravelRule) PathContest {
 	contest := &ruleBasedPathContest{
 		rule: rule,
