@@ -13,28 +13,20 @@ var _ = check.Suite(&ExtendedSolarSystemTestSuite{SolarSystemTestSuite{
 		baseSystem := newSolarSystem(id, constellationId, regionId, galaxyId, location, security)
 
 		// build first extension
-		extensionData1 := newSolarSystemExtensionData(baseSystem)
+		extension1 := &SolarSystemExtension{newSolarSystemExtensionData(baseSystem)}
+		extension1.AddCost(AddingTravelCost("test", 10.0))
+		extension1.AddJump(newJumpBuilder("type1", Id(1001)).Build())
+		extension1.BuildJump("type1", Id(1002))
+		extension1.BuildJump("type2", Id(2001))
 
-		extensionData1.costs = extensionData1.costs.Add(SingleTravelCostSum(AddingTravelCost("test", 10.0)))
-
-		builder1a := newJumpBuilder("type1", Id(1001))
-		extensionData1.jumps = append(extensionData1.jumps, builder1a.Build())
-		builder1b := newJumpBuilder("type1", Id(1002))
-		extensionData1.jumpBuilder = append(extensionData1.jumpBuilder, builder1b)
-		builder1c := newJumpBuilder("type2", Id(2001))
-		extensionData1.jumps = append(extensionData1.jumps, builder1c.Build())
-
-		extendedSystem1 := extensionData1.solarSystem()
+		extendedSystem1 := extension1.data.solarSystem()
 
 		// build second extension
-		extensionData2 := newSolarSystemExtensionData(extendedSystem1)
+		extension2 := &SolarSystemExtension{newSolarSystemExtensionData(extendedSystem1)}
+		extension2.AddCost(AddingTravelCost("test", 5.0))
+		extension2.BuildJump("type2", Id(2002))
 
-		extensionData2.costs = extensionData2.costs.Add(SingleTravelCostSum(AddingTravelCost("test", 5.0)))
-
-		builder2a := newJumpBuilder("type2", Id(2002))
-		extensionData2.jumps = append(extensionData2.jumps, builder2a.Build())
-
-		return extensionData2.solarSystem()
+		return extension2.data.solarSystem()
 	}}})
 
 func (suite *ExtendedSolarSystemTestSuite) TestCostsContainsAddedAndCombinedTravelCost(c *check.C) {
