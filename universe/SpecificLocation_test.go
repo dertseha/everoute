@@ -1,6 +1,7 @@
 package universe
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/dertseha/everoute/util"
@@ -11,6 +12,13 @@ import (
 type SpecificLocationTestSuite struct{}
 
 var _ = check.Suite(&SpecificLocationTestSuite{})
+
+func (suite *SpecificLocationTestSuite) TestStringReturnsReadableText(c *check.C) {
+	location := NewSpecificLocation(10, 20, 30)
+	result := fmt.Sprintf("%v", location)
+
+	c.Assert(result, check.Equals, "[10.000000, 20.000000, 30.000000]")
+}
 
 func (suite *SpecificLocationTestSuite) TestPositionRelativeToShouldReturnItselfForZero(c *check.C) {
 	location := NewSpecificLocation(10, 20, 30)
