@@ -47,12 +47,19 @@ func (suite *IntegrationTestSuite) SetUpTest(c *check.C) {
 	suite.rules = make([]travel.TravelRule, 0)
 }
 
-func (suite *IntegrationTestSuite) OptimizedSystemSearchCriterion(to string, rule travel.TravelRule) SearchCriterion {
+func (suite *IntegrationTestSuite) OptimizedSystemSearchCriterion(to string, avoiding []string, rule travel.TravelRule) SearchCriterion {
 	toId := suite.solarSystemIdsByName[to]
 	criteria := make([]SearchCriterion, 0)
 
 	criteria = append(criteria, DestinationSystemSearchCriterion(toId))
 	criteria = append(criteria, CostAwareSearchCriterion(rule))
+	if len(avoiding) > 0 {
+		avoidingIds := make([]universe.Id, len(avoiding))
+		for i, avoid := range avoiding {
+			avoidingIds[i] = suite.solarSystemIdsByName[avoid]
+		}
+		criteria = append(criteria, SystemAvoidingSearchCriterion(avoidingIds...))
+	}
 
 	return CombiningSearchCriterion(criteria...)
 }
@@ -70,6 +77,10 @@ func (suite *IntegrationTestSuite) Rule() travel.TravelRule {
 }
 
 func (suite *IntegrationTestSuite) VerifyRoute(c *check.C, from string, via []string, to string, expected []string) {
+	suite.VerifyRouteAvoiding(c, from, via, to, []string{}, expected)
+}
+
+func (suite *IntegrationTestSuite) VerifyRouteAvoiding(c *check.C, from string, via []string, to string, avoiding []string, expected []string) {
 	starts := []travel.Path{travel.NewPath(travel.NewStep(suite.solarSystemIdsByName[from], universe.AnyLocation(), universe.EmptyTravelCostSum(), universe.EmptyTravelCostSum()))}
 	searchDone := make(chan int)
 	routeChannel := make(chan *Route)
@@ -81,10 +92,10 @@ func (suite *IntegrationTestSuite) VerifyRoute(c *check.C, from string, via []st
 
 	builder := NewRouteFinder(capability, rule, starts, collector, func() { searchDone <- 1; close(searchDone) })
 	for _, viaSystem := range via {
-		builder.AddWaypoint(suite.OptimizedSystemSearchCriterion(viaSystem, rule))
+		builder.AddWaypoint(suite.OptimizedSystemSearchCriterion(viaSystem, avoiding, rule))
 	}
 	if to != "" {
-		builder.ForDestination(suite.OptimizedSystemSearchCriterion(to, rule))
+		builder.ForDestination(suite.OptimizedSystemSearchCriterion(to, avoiding, rule))
 	}
 
 	var _ = builder.Build()
@@ -142,4 +153,25 @@ func (suite *IntegrationTestSuite) TestRouteFromRensToBalginiaViaGyng(c *check.C
 
 	suite.VerifyRoute(c, "Rens", []string{"Gyng"}, "Balginia",
 		[]string{"Rens", "Frarn", "Gyng", "Frarn", "Illinfrik", "Balginia"})
+}
+
+func (suite *IntegrationTestSuite) TestRouteFromRensToBalginiaViaOngaHurjafrenGyng(c *check.C) {
+	suite.AddRule(transitcount.Rule())
+
+	suite.VerifyRoute(c, "Rens", []string{"Onga", "Hurjafren", "Gyng"}, "Balginia",
+		[]string{"Rens", "Frarn", "Gyng", "Onga", "Osaumuni", "Oremmulf", "Hurjafren", "Balginia"})
+}
+
+func (suite *IntegrationTestSuite) TestRouteFromOdatrikToFrarnAvoidingAbudbanRens(c *check.C) {
+	avoiding := []string{"Abudban", "Rens"}
+
+	suite.VerifyRouteAvoiding(c, "Odatrik", []string{}, "Frarn", avoiding,
+		[]string{"Odatrik", "Trytedald", "Ivar", "Meirakulf", "Frarn"})
+}
+
+func (suite *IntegrationTestSuite) TestAvoidanceAllowsAvoidedDestinationSystem(c *check.C) {
+	avoiding := []string{"Abudban", "Rens"}
+
+	suite.VerifyRouteAvoiding(c, "Avesber", []string{}, "Rens", avoiding,
+		[]string{"Avesber", "Frarn", "Rens"})
 }
