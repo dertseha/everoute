@@ -9,6 +9,8 @@ type naturalOrderTravelRule struct {
 	nullCost universe.TravelCost
 }
 
+// NaturalOrderTravelRule returns a travel rule instance that compares costs using the provided nullCost.
+// This rule compares the values of these costs according to their natural order.
 func NaturalOrderTravelRule(nullCost universe.TravelCost) travel.TravelRule {
 	return &naturalOrderTravelRule{nullCost}
 }

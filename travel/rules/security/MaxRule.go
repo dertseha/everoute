@@ -16,6 +16,8 @@ func (rule *maxRule) Compare(sumA *universe.TravelCostSum, sumB *universe.Travel
 	return valueA - valueB
 }
 
+// MaxRule returns a travel rule instance that compares the amount of systems that have a security value equal
+// or above the given limit. limit is expressed in a floating point value.
 func MaxRule(limit float64) travel.TravelRule {
 	var rule = &maxRule{limit: int(limit * 10)}
 

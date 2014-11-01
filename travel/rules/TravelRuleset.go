@@ -9,6 +9,8 @@ type travelRuleset struct {
 	rules []travel.TravelRule
 }
 
+// TravelRuleset returns a ruleset that is based on a list of other rules. When costs are compared, the rules are
+// queried in order until one returns a comparison result != 0.
 func TravelRuleset(rules ...travel.TravelRule) travel.TravelRule {
 	var result = &travelRuleset{
 		rules: append(make([]travel.TravelRule, 0, len(rules)), rules...)}

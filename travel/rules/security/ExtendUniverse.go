@@ -2,6 +2,7 @@ package security
 
 import "github.com/dertseha/everoute/universe"
 
+// ExtendUniverse marks all systems with the cost relecting their security value.
 func ExtendUniverse(builder *universe.UniverseBuilder) {
 	var solarSystemIds []universe.Id = builder.SolarSystemIds()
 

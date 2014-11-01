@@ -5,6 +5,7 @@ import (
 	"github.com/dertseha/everoute/travel/rules"
 )
 
+// Rule returns a travel rule that orders warp distances by their value.
 func Rule() travel.TravelRule {
-	return rules.NaturalOrderTravelRule(Cost(0.0))
+	return rules.NaturalOrderTravelRule(NullCost())
 }
