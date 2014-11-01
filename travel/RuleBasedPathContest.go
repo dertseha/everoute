@@ -15,6 +15,7 @@ func RuleBasedPathContest(rule TravelRule) PathContest {
 	return contest
 }
 
+// Enter is the PathConstest interface implementation.
 func (contest *ruleBasedPathContest) Enter(path Path) bool {
 	var result = true
 	var destinationKey = path.DestinationKey()
