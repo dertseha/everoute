@@ -11,6 +11,8 @@ type jumpDriveTravelCapability struct {
 	distanceLimitLy float64
 }
 
+// JumpDriveTravelCapability returns a travel capability that tries to extend paths by the use of jump drive jumps.
+// The distance limit is provided in light years, by which the path extensions are limited.
 func JumpDriveTravelCapability(universe universe.Universe, distanceLimitLy float64) travel.TravelCapability {
 	return &jumpDriveTravelCapability{universe: universe, distanceLimitLy: distanceLimitLy}
 }

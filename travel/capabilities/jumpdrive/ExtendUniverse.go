@@ -5,6 +5,10 @@ import (
 	"github.com/dertseha/everoute/util"
 )
 
+// ExtendUniverse uses the provided builder to add jump drive jumps between all applicable solar systems that are
+// at most the given limit in light years apart.
+// Only the NewEden galaxy is considered, jumps are created from high-sec systems as well as between any suitable
+// non-high-sec system pair.
 func ExtendUniverse(builder *universe.UniverseBuilder, limit float64) {
 	highSecSystems := make([]universe.SolarSystemExtension, 0)
 	nonHighSecSystems := make([]universe.SolarSystemExtension, 0)

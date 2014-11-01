@@ -6,6 +6,8 @@ type combiningTravelCapability struct {
 	capabilities []travel.TravelCapability
 }
 
+// CombiningTravelCapability returns a travel capability that is based on a list of other travel capabilities.
+// The returned travel capability returns the sum of all contained travel capabilities for continuing a path.
 func CombiningTravelCapability(capabilities ...travel.TravelCapability) travel.TravelCapability {
 	return &combiningTravelCapability{append(make([]travel.TravelCapability, 0, len(capabilities)), capabilities...)}
 }

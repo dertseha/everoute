@@ -10,6 +10,9 @@ type jumpDriveJump struct {
 	distance   float64
 }
 
+// Jump returns a universe.Jump instance that describes a jump drive jump.
+// This jump instance uses a smaller memory footprint when idle, but may create new data instances from various
+// getters.
 func Jump(toSytemId universe.Id, distance float64) universe.Jump {
 	return &jumpDriveJump{toSystemId: toSytemId, distance: distance}
 }

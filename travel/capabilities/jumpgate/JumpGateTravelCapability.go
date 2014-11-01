@@ -10,6 +10,7 @@ type jumpGateTravelCapability struct {
 	universe universe.Universe
 }
 
+// JumpGateTravelCapability returns a travel capability that tries to extend paths by the use of jump gates.
 func JumpGateTravelCapability(universe universe.Universe) travel.TravelCapability {
 	return &jumpGateTravelCapability{universe: universe}
 }
