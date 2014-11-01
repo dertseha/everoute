@@ -37,7 +37,7 @@ func (builder *UniverseBuilder) Build() Universe {
 func (builder *UniverseBuilder) AddSolarSystem(id Id, constellationId Id, regionId Id, galaxyId GalaxyId, location Location, security TrueSecurity) {
 	var data, exists = builder.solarSystemExtensions[id]
 
-	if !exists {
+	if !exists && !builder.base.HasSolarSystem(id) {
 		data = newSolarSystemExtensionData(newSolarSystem(id, constellationId, regionId, galaxyId, location, security))
 		builder.solarSystemExtensions[id] = data
 	} else {
