@@ -8,6 +8,11 @@ type combiningSearchCriterion struct {
 	criteria []SearchCriterion
 }
 
+// CombiningSearchCriterion returns a SearchCriterion instance that returns results combined from the contained
+// criteria.
+// A path is desired if all contained criteria desire the path.
+// A search will continue if all contained criteria allow the search to continue.
+// If no criteria exist, nothing is desired and all searches are aborted.
 func CombiningSearchCriterion(criteria ...SearchCriterion) SearchCriterion {
 	return &combiningSearchCriterion{criteria: append(make([]SearchCriterion, 0, len(criteria)), criteria...)}
 }

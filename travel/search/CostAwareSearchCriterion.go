@@ -6,6 +6,8 @@ type costAwareSearchCriterion struct {
 	rule travel.TravelRule
 }
 
+// CostAwareSearchCriterion returns a SearchCriterion instance that desires all paths but aborts searches if a path
+// is considered worse than any of the already found paths. It uses a travel rule for comparing the costs.
 func CostAwareSearchCriterion(rule travel.TravelRule) SearchCriterion {
 	return &costAwareSearchCriterion{rule: rule}
 }

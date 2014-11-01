@@ -6,6 +6,8 @@ type simplePathSearchResultCollector struct {
 	results map[string]travel.Path
 }
 
+// SimplePathSearchResultCollector returns a collector instance that keeps all paths by their destination key.
+// If a path with an already known destination key is collected, the new instance is kept and the old one discarded.
 func SimplePathSearchResultCollector() PathSearchResultCollector {
 	return &simplePathSearchResultCollector{results: make(map[string]travel.Path)}
 }

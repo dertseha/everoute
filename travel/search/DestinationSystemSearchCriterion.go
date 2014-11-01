@@ -9,6 +9,8 @@ type destinationSystemSearchCriterion struct {
 	solarSystemId universe.Id
 }
 
+// DestinationSystemSearchCriterion returns a SearchCriterion instance that desires all paths that end in the specified
+// solar system and aborts searches if a path ends in this system.
 func DestinationSystemSearchCriterion(solarSystemId universe.Id) SearchCriterion {
 	return &destinationSystemSearchCriterion{solarSystemId: solarSystemId}
 }
