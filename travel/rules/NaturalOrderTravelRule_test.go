@@ -15,7 +15,7 @@ type NaturalOrderTravelRuleTestSuite struct {
 var _ = check.Suite(&NaturalOrderTravelRuleTestSuite{})
 
 func (suite *NaturalOrderTravelRuleTestSuite) SetUpTest(c *check.C) {
-	suite.nullCost = travel.AddingTravelCost("test", 0.0)
+	suite.nullCost = universe.AddingTravelCost("test", 0.0)
 	suite.rule = NaturalOrderTravelRule(suite.nullCost)
 }
 
@@ -28,8 +28,8 @@ func (suite *NaturalOrderTravelRuleTestSuite) TestCompareReturnsZeroWhenSumDoesN
 }
 
 func (suite *NaturalOrderTravelRuleTestSuite) TestCompareReturnsPositiveWhenFirstSumIsBigger(c *check.C) {
-	sumA := universe.EmptyTravelCostSum().Add(universe.SingleTravelCostSum(travel.AddingTravelCost(suite.nullCost.Type(), 10)))
-	sumB := universe.EmptyTravelCostSum().Add(universe.SingleTravelCostSum(travel.AddingTravelCost(suite.nullCost.Type(), 5)))
+	sumA := universe.EmptyTravelCostSum().Add(universe.SingleTravelCostSum(universe.AddingTravelCost(suite.nullCost.Type(), 10)))
+	sumB := universe.EmptyTravelCostSum().Add(universe.SingleTravelCostSum(universe.AddingTravelCost(suite.nullCost.Type(), 5)))
 	result := suite.rule.Compare(sumA, sumB)
 
 	c.Assert(result > 0.0, check.Equals, true)

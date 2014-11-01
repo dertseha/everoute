@@ -3,7 +3,6 @@ package security
 import (
 	"fmt"
 
-	"github.com/dertseha/everoute/travel"
 	"github.com/dertseha/everoute/universe"
 )
 
@@ -12,7 +11,7 @@ func travelCostType(security universe.TrueSecurity) string {
 }
 
 func travelCost(security universe.TrueSecurity, value float64) universe.TravelCost {
-	return travel.AddingTravelCost(travelCostType(security), value)
+	return universe.AddingTravelCost(travelCostType(security), value)
 }
 
 var sumSecurityCosts func(*universe.TravelCostSum, int, int) float64 = (func() func(*universe.TravelCostSum, int, int) float64 {

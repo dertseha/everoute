@@ -1,6 +1,4 @@
-package travel
-
-import "github.com/dertseha/everoute/universe"
+package universe
 
 type addingTravelCost struct {
 	costType string
@@ -8,7 +6,7 @@ type addingTravelCost struct {
 }
 
 // AddingTravelCost returns a TravelCost that can simply add its value to others of the same type.
-func AddingTravelCost(costType string, value float64) universe.TravelCost {
+func AddingTravelCost(costType string, value float64) TravelCost {
 	cost := &addingTravelCost{
 		costType: costType,
 		value:    value}
@@ -28,7 +26,7 @@ func (cost *addingTravelCost) Value() float64 {
 
 // Join returns a travel cost of the same type that is the sum of this and the other value.
 // This method panics if the type of the given cost is not of the same as from this cost.
-func (cost *addingTravelCost) Join(other universe.TravelCost) universe.TravelCost {
+func (cost *addingTravelCost) Join(other TravelCost) TravelCost {
 	if cost.costType != other.Type() {
 		panic("Cost type mismatch")
 	}

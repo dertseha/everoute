@@ -1,7 +1,6 @@
 package rules
 
 import (
-	"github.com/dertseha/everoute/travel"
 	"github.com/dertseha/everoute/universe"
 
 	check "gopkg.in/check.v1"
@@ -21,12 +20,12 @@ func (suite *TravelRulesetTestSuite) SetUpTest(c *check.C) {
 	suite.costType2 = "equal"
 
 	suite.sumA = universe.EmptyTravelCostSum()
-	suite.sumA = suite.sumA.Add(universe.SingleTravelCostSum(travel.AddingTravelCost(suite.costType1, 5)))
-	suite.sumA = suite.sumA.Add(universe.SingleTravelCostSum(travel.AddingTravelCost(suite.costType2, 100)))
+	suite.sumA = suite.sumA.Add(universe.SingleTravelCostSum(universe.AddingTravelCost(suite.costType1, 5)))
+	suite.sumA = suite.sumA.Add(universe.SingleTravelCostSum(universe.AddingTravelCost(suite.costType2, 100)))
 
 	suite.sumB = universe.EmptyTravelCostSum()
-	suite.sumB = suite.sumB.Add(universe.SingleTravelCostSum(travel.AddingTravelCost(suite.costType1, 10)))
-	suite.sumB = suite.sumB.Add(universe.SingleTravelCostSum(travel.AddingTravelCost(suite.costType2, 100)))
+	suite.sumB = suite.sumB.Add(universe.SingleTravelCostSum(universe.AddingTravelCost(suite.costType1, 10)))
+	suite.sumB = suite.sumB.Add(universe.SingleTravelCostSum(universe.AddingTravelCost(suite.costType2, 100)))
 }
 
 func (suite *TravelRulesetTestSuite) TestCompareReturnsZeroWhenNoRulesDefined(c *check.C) {
@@ -37,8 +36,8 @@ func (suite *TravelRulesetTestSuite) TestCompareReturnsZeroWhenNoRulesDefined(c 
 }
 
 func (suite *TravelRulesetTestSuite) TestCompareConsidersNextRuleWhenPreviousReturnedZero(c *check.C) {
-	rule1 := NaturalOrderTravelRule(travel.AddingTravelCost(suite.costType2, 0.0))
-	rule2 := NaturalOrderTravelRule(travel.AddingTravelCost(suite.costType1, 0.0))
+	rule1 := NaturalOrderTravelRule(universe.AddingTravelCost(suite.costType2, 0.0))
+	rule2 := NaturalOrderTravelRule(universe.AddingTravelCost(suite.costType1, 0.0))
 	rule := TravelRuleset(rule1, rule2)
 	result := rule.Compare(suite.sumA, suite.sumB)
 
