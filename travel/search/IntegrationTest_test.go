@@ -43,7 +43,6 @@ func (suite *IntegrationTestSuite) SetUpSuite(c *check.C) {
 
 func (suite *IntegrationTestSuite) SetUpTest(c *check.C) {
 	suite.capabilities = make([]travel.TravelCapability, 0)
-	suite.capabilities = append(suite.capabilities, jumpgate.JumpGateTravelCapability(suite.verse))
 	suite.rules = make([]travel.TravelRule, 0)
 }
 
@@ -62,6 +61,18 @@ func (suite *IntegrationTestSuite) OptimizedSystemSearchCriterion(to string, avo
 	}
 
 	return CombiningSearchCriterion(criteria...)
+}
+
+func (suite *IntegrationTestSuite) AddCapability(capability travel.TravelCapability) {
+	suite.capabilities = append(suite.capabilities, capability)
+}
+
+func (suite *IntegrationTestSuite) Capability() travel.TravelCapability {
+	if len(suite.capabilities) == 0 {
+		suite.AddCapability(jumpgate.JumpGateTravelCapability(suite.verse, false))
+	}
+
+	return capabilities.CombiningTravelCapability(suite.capabilities...)
 }
 
 func (suite *IntegrationTestSuite) AddRule(rule travel.TravelRule) {
@@ -84,7 +95,7 @@ func (suite *IntegrationTestSuite) VerifyRouteAvoiding(c *check.C, from string, 
 	starts := []travel.Path{travel.NewPath(travel.NewStep(suite.solarSystemIdsByName[from], universe.AnyLocation(), universe.EmptyTravelCostSum(), universe.EmptyTravelCostSum()))}
 	searchDone := make(chan int)
 	routeChannel := make(chan *Route)
-	capability := capabilities.CombiningTravelCapability(suite.capabilities...)
+	capability := suite.Capability()
 	rule := suite.Rule()
 	collector := &routeSearchResultCollector{channel: routeChannel}
 	done := false
@@ -174,4 +185,11 @@ func (suite *IntegrationTestSuite) TestAvoidanceAllowsAvoidedDestinationSystem(c
 
 	suite.VerifyRouteAvoiding(c, "Avesber", []string{}, "Rens", avoiding,
 		[]string{"Avesber", "Frarn", "Rens"})
+}
+
+func (suite *IntegrationTestSuite) TestJumpGateCapabilityCanIgnoreHighSec(c *check.C) {
+	suite.AddCapability(jumpgate.JumpGateTravelCapability(suite.verse, true))
+
+	suite.VerifyRoute(c, "Hrondedir", []string{}, "Aralgrund",
+		[]string{"Hrondedir", "Sotrenzur", "Katugumur", "Bogelek", "Aralgrund"})
 }
