@@ -1,6 +1,8 @@
 [![Build Status][drone-image]][drone-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 
+**This project is discontinued. My interest in EVE has dropped again and based on experience, it'll take some years until I might resub. Furthermore interest in this library was low, which is why I keep it as a project for experience.**
+
 # everoute - Go library
 
 This Go library provides a route calculator and optimizer for ship travel in [EVE Online](https://www.eveonline.com/).
